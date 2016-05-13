@@ -1,0 +1,6 @@
+html {
+	font-size: 62.5%; /* Sets up the fontSize Mixin */
+}
+body {
+	@include font-size(2.0);
+}
