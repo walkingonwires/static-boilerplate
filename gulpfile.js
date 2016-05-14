@@ -43,13 +43,15 @@ gulp.task('sass', function () {
     	autoprefixer: false
     }))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('dist/style/'));
+    .pipe(gulp.dest('dist/style/'))
+    .pipe(connect.reload());
 });
 
 // Copy Images to Build Folder
 gulp.task('copyimages', function() {
     return gulp.src('src/images/**/*')
-    .pipe(gulp.dest('dist/images/'));
+    .pipe(gulp.dest('dist/images/'))
+    .pipe(connect.reload());
 });
 
 // Compress and Move Images
@@ -60,13 +62,15 @@ gulp.task('imagemin', function(cb) {
         svgoPlugins: [{removeViewBox: false}],
         use: [pngquant()]
     }))
-    .pipe(gulp.dest('dist/images/'));
+    .pipe(gulp.dest('dist/images/'))
+    .pipe(connect.reload());
 });
 
 // Copy fonts to Build Folder
 gulp.task('copyfonts', function() {
     return gulp.src('src/fonts/**/*')
-    .pipe(gulp.dest('dist/fonts/'));
+    .pipe(gulp.dest('dist/fonts/'))
+    .pipe(connect.reload());
 });
 
 // Check JS for any errors
@@ -79,7 +83,8 @@ gulp.task('lint', function() {
 // Copy JS to Build Folder
 gulp.task('copyjs', function() {
     return gulp.src('src/js/**/*')
-    .pipe(gulp.dest('dist/js/'));
+    .pipe(gulp.dest('dist/js/'))
+    .pipe(connect.reload());
 });
 
 // Generate Icon Font
@@ -90,12 +95,16 @@ gulp.task('icons', function(){
 		'css-selector': '.icon-{{glyph}}'
 	}))
 	.pipe(gulp.dest("src/fonts/icons/"))
+	.pipe(connect.reload());
 });
 
 
 // Server
 gulp.task('connect', function() {
-  connect.server();
+  connect.server({
+  	port: 5000,
+    livereload: true
+  });
 });
 
 // Styleguide
@@ -121,6 +130,11 @@ gulp.task('styleguide:applystyles', function() {
     .pipe(gulp.dest(outputPath));
 });
 
+gulp.task('html', function(){
+	gulp.src("*.html")
+	.pipe(connect.reload());
+});
+
 // Default
 gulp.task('default', ['sass', 'copyimages', 'copyfonts', 'copyjs', 'connect', 'watch']);
 
@@ -128,7 +142,7 @@ gulp.task('default', ['sass', 'copyimages', 'copyfonts', 'copyjs', 'connect', 'w
 gulp.task('build', ['sass', 'imagemin', 'copyjs', 'copyfonts']);
 
 // Watch for files changes
-gulp.task('watch', function () {
+gulp.task('watch', ['connect'], function() {
     watch('src/style/**', batch(function (events, done) {
         gulp.start('sass', done);
     }));
@@ -140,6 +154,9 @@ gulp.task('watch', function () {
     }));
     watch('src/js/**', batch(function (events, done) {
         gulp.start('copyjs', done);
+    }));
+    watch('*.html', batch(function (events, done) {
+    	gulp.start('html', done);
     }));
 });
 
