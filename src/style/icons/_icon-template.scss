@@ -1,3 +1,4 @@
+// styleguide:ignore:start
 @font-face {
 	font-family: "<%= fontName %>";
 	src: url('<%= fontPath %><%= fontName %>.eot');
@@ -48,3 +49,4 @@
 	@include <%= cssClass%>(<%= glyph.fileName %>);
 }
 <% }); %>
+// styleguide:ignore:end
