@@ -101,10 +101,7 @@ gulp.task('icons', function(){
 
 // Server
 gulp.task('connect', function() {
-  connect.server({
-  	port: 5000,
-    livereload: true
-  });
+  connect.server();
 });
 
 // Styleguide
