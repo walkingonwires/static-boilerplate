@@ -23,7 +23,9 @@ var pngquant = require('imagemin-pngquant');
 var fontcustom = require('gulp-fontcustom')
 
 // Server
-connect = require('gulp-connect');
+var connect = require('gulp-connect');
+var fs = require('fs');
+var path = require('path');
 
 // Compress SASS files to CSS
 gulp.task('sass', function () {
@@ -101,7 +103,41 @@ gulp.task('icons', function(){
 
 // Server
 gulp.task('connect', function() {
-  connect.server();
+	connect.server({
+		middleware: function(connect, opt) {
+			return [
+				function(req, res, next) {
+					var url = req.url;
+					var passthroughPrefixes = ["/dist/", "/views/"];
+					var passthrough = false;
+					
+					for(i in passthroughPrefixes) {
+						if(url.indexOf(passthroughPrefixes[i]) === 0) {
+							passthrough = true;
+							break;
+						}
+					}
+					
+					if(passthrough) {
+						next();
+					} else {
+						// console.log("Rewriting " + url);
+						
+						var filePath = path.join(".", 'index.html');
+						var stat = fs.statSync(filePath);
+
+						res.writeHead(200, {
+							'Content-Type': 'text/html',
+							'Content-Length': stat.size
+						});
+
+						var readStream = fs.createReadStream(filePath);
+						readStream.pipe(res);
+					}
+				}
+			]
+		}
+	});
 });
 
 // Styleguide
