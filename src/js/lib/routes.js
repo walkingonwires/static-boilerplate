@@ -31,42 +31,42 @@
 
   window.route = {
     home: function (ctx, next) {
-      get('views/home.html', function (html) {
+      get('/views/home.html', function (html) {
         ctx.data.index = 0;
         ctx.partials.content = html;
         next();
       });
     },
     work: function (ctx, next) {
-      get('views/work.html', function (html) {
+      get('/views/work.html', function (html) {
         ctx.data.index = 1;
         ctx.partials.content = html;
         next();
       });
     },
     whatwedo: function (ctx, next) {
-      get('views/what-we-do.html', function (html) {
+      get('/views/what-we-do.html', function (html) {
         ctx.data.index = 2;
         ctx.partials.content = html;
         next();
       });
     },
     aboutus: function (ctx, next) {
-      get('views/about-us.html', function (html) {
+      get('/views/about-us.html', function (html) {
         ctx.data.index = 3;
         ctx.partials.content = html;
         next();
       });
     },
     jobs: function (ctx, next) {
-      get('views/jobs.html', function (html) {
+      get('/views/jobs.html', function (html) {
         ctx.data.index = 4;
         ctx.partials.content = html;
         next();
       });
     },
     labs: function (ctx, next) {
-      get('views/labs.html', function (html) {
+      get('/views/labs.html', function (html) {
         ctx.data.index = 5;
         ctx.partials.content = html;
         next();
@@ -76,7 +76,7 @@
 
   window.render = {
     content: function (ctx, next) {
-      get('views/content.html', function (html) {
+      get('/views/content.html', function (html) {
         var template = Hogan.compile(html),
           content = template.render(ctx.data, ctx.partials);
         //

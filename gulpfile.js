@@ -110,19 +110,19 @@ gulp.task('connect', function() {
 					var url = req.url;
 					var passthroughPrefixes = ["/dist/", "/views/"];
 					var passthrough = false;
-					
+
 					for(i in passthroughPrefixes) {
 						if(url.indexOf(passthroughPrefixes[i]) === 0) {
 							passthrough = true;
 							break;
 						}
 					}
-					
+
 					if(passthrough) {
 						next();
 					} else {
-						// console.log("Rewriting " + url);
-						
+						console.log("Rewriting " + url);
+
 						var filePath = path.join(".", 'index.html');
 						var stat = fs.statSync(filePath);
 
