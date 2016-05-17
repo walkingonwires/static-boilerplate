@@ -87,7 +87,7 @@
         var template = Hogan.compile(html),
           content = template.render(ctx.data, ctx.partials);
         //
-        $('#content').empty().append(content);
+        $('.content').empty().append(content);
         changeActive(ctx.data.index);
         if (typeof done === 'function') done(ctx.data.index);
       });

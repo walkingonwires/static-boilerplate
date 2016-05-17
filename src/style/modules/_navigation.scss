@@ -1,0 +1,25 @@
+nav {
+	border-bottom: 1px solid $black;
+	display: block;
+	font-family: $fontAccent;
+	@include font-size(1.4);
+
+	ul {
+		display: block;
+	}
+
+	li {
+		display: inline-block;
+
+		a {
+			padding: 20px 10px;
+			display: inline-block;
+		}
+
+		&.active {
+			a {
+				text-decoration: none;
+			}
+		}
+	}
+}

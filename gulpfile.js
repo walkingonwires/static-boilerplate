@@ -65,6 +65,7 @@ gulp.task('imagemin', function(cb) {
         use: [pngquant()]
     }))
     .pipe(gulp.dest('dist/images/'))
+    .pipe(gulp.dest('dist/styleguide/images/'))
     .pipe(connect.reload());
 });
 
@@ -72,6 +73,7 @@ gulp.task('imagemin', function(cb) {
 gulp.task('copyfonts', function() {
     return gulp.src('src/fonts/**/*')
     .pipe(gulp.dest('dist/fonts/'))
+    .pipe(gulp.dest('dist/styleguide/fonts/'))
     .pipe(connect.reload());
 });
 
@@ -97,6 +99,7 @@ gulp.task('icons', function(){
 		'css-selector': '.icon-{{glyph}}'
 	}))
 	.pipe(gulp.dest("src/fonts/icons/"))
+	.pipe(gulp.dest("dist/styleguide/"))
 	.pipe(connect.reload());
 });
 
@@ -104,6 +107,8 @@ gulp.task('icons', function(){
 // Server
 gulp.task('connect', function() {
 	connect.server({
+		livereload: true,
+		port: 8888,
 		middleware: function(connect, opt) {
 			return [
 				function(req, res, next) {
@@ -146,16 +151,22 @@ var outputPath = 'dist/styleguide/';
 gulp.task('styleguide:generate', function() {
 	return gulp.src(['src/style/**/*.scss', '!src/style/vendor/**'])
     .pipe(styleguide.generate({
-        title: 'My Styleguide',
+        title: 'Transmogrify Site Redesign',
         server: true,
         rootPath: outputPath,
-        overviewPath: 'src/styleguide/README.md'
+        overviewPath: 'src/styleguide/README.md',
+        extraHead: [
+        	'<link rel="stylesheet" type="text/css" href="https://cloud.typography.com/7118674/6543752/css/fonts.css" />'
+        ]
       }))
     .pipe(gulp.dest(outputPath));
 });
 
 gulp.task('styleguide:applystyles', function() {
-  return gulp.src('dist/style/style.css')
+  return gulp.src([
+  		'dist/style/style.css',
+  		'fonts/icons/icons.css'
+  		])
     .pipe(sass({
       errLogToConsole: true
     }))
