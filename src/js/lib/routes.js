@@ -71,6 +71,13 @@
         ctx.partials.content = html;
         next();
       });
+    },
+    error: function (ctx, next) {
+      get('/views/error.html', function (html) {
+        ctx.data.index = 5;
+        ctx.partials.content = html;
+        next();
+      });
     }
   };
 
