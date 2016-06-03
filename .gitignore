@@ -5,3 +5,4 @@ LESS/node_modules
 Sass/node_modules
 LESS/dist
 Sass/dist
+.idea/
