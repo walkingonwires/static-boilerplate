@@ -1,18 +1,22 @@
 var gulp = require("gulp"),
+    sass = require('gulp-sass'),
+    wrap = require('gulp-wrap'),
     gutil = require('gulp-util'),
     watch = require('gulp-watch'),
     batch = require('gulp-batch'),
-    sourcemaps = require('gulp-sourcemaps'),
-    autoprefixer = require('gulp-autoprefixer'),
-    sass = require('gulp-sass'),
-    cssnano = require('gulp-cssnano'),
-    browserSync = require('browser-sync').create(),
-    handlebars = require('gulp-handlebars'),
-    wrap = require('gulp-wrap'),
-    declare = require('gulp-declare'),
     concat = require('gulp-concat'),
-    handlebarsLib = require('handlebars'),
-    layouts = require('handlebars-layouts');
+    rename = require("gulp-rename"),
+    uglify = require('gulp-uglify'),
+    cssnano = require('gulp-cssnano'),
+    declare = require('gulp-declare'),
+    browserify = require('browserify'),
+    source = require('vinyl-source-stream'),
+    sourcemaps = require('gulp-sourcemaps'),
+    handlebars = require('gulp-handlebars'),
+    autoprefixer = require('gulp-autoprefixer'),
+    hbsfy = require('hbsfy'),
+    browserSync = require('browser-sync').create();
+
 
 
 gulp.task('browser-sync', function () {
@@ -42,23 +46,14 @@ gulp.task('sass', function () {
         .pipe(gulp.dest('dist/style/'));
 });
 
-gulp.task('templates', function () {
-    handlebarsLib.registerHelper(layouts(handlebarsLib));
-    gulp.src('./src/templates/**/*.hbs')
-        .pipe(handlebars({
-            handlebars: handlebarsLib
-        }))
-        .pipe(wrap('Handlebars.template(<%= contents %>)'))
-        .pipe(declare({
-            namespace: 'app.templates',
-            noRedeclare: true   // Avoid duplicate declarations
-        }))
-        .pipe(concat('templates.js'))
-        .pipe(gulp.dest('dist/js/templates/'))
-        .pipe(gulp.dest('src/js/templates/'));
+gulp.task('browserify', function () {
+    return browserify('./src/js/main.js')
+        .bundle()
+        .pipe(source('app.js'))
+        .pipe(gulp.dest('./dist/js'));
 });
 
-gulp.task('default', ['sass', 'templates', 'browser-sync', 'watch']);
+gulp.task('default', ['sass','browserify', 'browser-sync', 'watch']);
 
 gulp.task('watch', function () {
     watch('app/scss/**', batch(function (events, done) {
