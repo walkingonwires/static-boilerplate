@@ -5,4 +5,7 @@ var hbs = require('handlebars/runtime').default,
 hbs.registerHelper(layouts(hbs));
 hbs.registerPartial('layout', require('../templates/layout.hbs'));
 
-var honmePage = require('./pages/homepage');
+var homePage = require('./pages/homepage');
+homePage();
+
+console.log('main script runs or blah');

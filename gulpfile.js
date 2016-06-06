@@ -5,11 +5,11 @@ var gulp = require("gulp"),
     watch = require('gulp-watch'),
     batch = require('gulp-batch'),
     concat = require('gulp-concat'),
-    rename = require("gulp-rename"),
     uglify = require('gulp-uglify'),
     cssnano = require('gulp-cssnano'),
     declare = require('gulp-declare'),
     browserify = require('browserify'),
+    watchify = require('watchify')
     source = require('vinyl-source-stream'),
     sourcemaps = require('gulp-sourcemaps'),
     handlebars = require('gulp-handlebars'),
@@ -46,20 +46,42 @@ gulp.task('sass', function () {
         .pipe(gulp.dest('dist/style/'));
 });
 
-gulp.task('browserify', function () {
-    return browserify('./src/js/main.js')
-        .bundle()
-        .pipe(source('app.js'))
-        .pipe(gulp.dest('./dist/js'));
+gulp.task('addIndex', function () {
+  return gulp.src('src/index.html')
+  .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('default', ['sass','browserify', 'browser-sync', 'watch']);
+function bundle (bundler) {
+  return bundler
+      .bundle()
+      .pipe(source('app.js'))
+      .pipe(gulp.dest('./dist/js'));
+}
+
+gulp.task('js', function () {
+    return bundle(browserify('./src/js/main.js'));
+});
+
+gulp.task('reload-sass', ['sass'], function(){
+  browserSync.reload();
+})
 
 gulp.task('watch', function () {
-    watch('app/scss/**', batch(function (events, done) {
-        gulp.start('sass', done);
-    }));
+    var watcher = watchify(browserify('./src/js/main.js', watchify.args));
+
+    bundle(watcher);
+
+    watcher.on('update', function () {
+      bundle(watcher);
+      browserSync.reload();
+    });
+    watcher.on('log', gutil.log);
+
+    gulp.watch('src/style/**', ['reload-sass']);
+
 });
+
+gulp.task('default', ['sass', 'js', 'addIndex','browser-sync', 'watch']);
 
 //// Gulp
 //var gulp = require("gulp");
