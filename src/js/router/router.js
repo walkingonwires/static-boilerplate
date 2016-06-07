@@ -5,5 +5,5 @@ module.exports = function() {
 		other = require('../pages/other');
 
 	page('/', homepage());
-	page('/other', other());
+	//page('/other', other());
 };
