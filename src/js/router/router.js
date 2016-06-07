@@ -1,9 +1,9 @@
 var page = require('page');
 
 module.exports = function() {
-	page('/', require('../pages/homepage'));
-	page('/other', function() {
-		console.log(require('../pages/other'));
-		require('../pages/other')
-	});
+	var homepage = require('../pages/homepage'),
+		other = require('../pages/other');
+
+	page('/', homepage());
+	page('/other', other());
 };

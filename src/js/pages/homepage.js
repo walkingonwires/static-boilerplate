@@ -1,4 +1,4 @@
-var template = require('../../templates/index.hbs'),
+var template = require('../../templates/home.hbs'),
 	content = require('../contentful/content');
 
 module.exports = function() {
@@ -8,7 +8,7 @@ module.exports = function() {
 				console.log(results);
 			});
 
-		document.body.outerHTML = template({
+		document.body.innerHTML = template({
 			data: "An instantiated template!"
 		});
 	}
