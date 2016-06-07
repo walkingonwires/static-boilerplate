@@ -1,4 +1,4 @@
-var template = require('../../templates/home.hbs'),
+var template = require('../../templates/pages/home.hbs'),
     content = require('../contentful/content');
 
 module.exports = function (ctx, next) {
