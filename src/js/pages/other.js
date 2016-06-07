@@ -1,10 +1,7 @@
-var template = require('../../templates/other.hbs'),
-	content = require('../contentful/content');
+var template = require('../../templates/other.hbs');
 
-module.exports = function() {
-	window.onload = function() {
-		document.body.outerHTML = template({
-			data: "An instantiated template!"
-		});
-	}
+module.exports = function (ctx, next) {
+    document.body.innerHTML = template({
+        data: "An instantiated template!"
+    });
 };
