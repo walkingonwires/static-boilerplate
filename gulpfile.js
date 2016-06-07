@@ -25,7 +25,8 @@ gulp.task('connect', function() {
         root: 'dist',
         port: config.port,
         base: config.base,
-        livereload: true
+        livereload: true,
+        fallback: './dist/index.html'
     });
 });
 
@@ -57,7 +58,7 @@ gulp.task('sass', function () {
         .pipe(connect.reload());
 });
 
-gulp.task('addIndex', function () {
+gulp.task('copyIndex', function () {
     return gulp.src('src/index.html')
         .pipe(gulp.dest('dist/'));
 });
@@ -89,4 +90,4 @@ gulp.task('watch', function () {
     }));
 });
 
-gulp.task('default', ['sass', 'js', 'addIndex', 'open', 'watch']);
+gulp.task('default', ['copyIndex', 'sass', 'js', 'open', 'watch']);
