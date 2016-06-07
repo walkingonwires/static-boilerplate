@@ -8,6 +8,7 @@
   "devDependencies": {
     "browser-sync": "^2.12.10",
     "browserify": "^13.0.1",
+    "contentful": "^3.3.14",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-batch": "^1.0.5",
@@ -26,6 +27,7 @@
     "hbsfy": "^2.7.0",
     "jquery": "^2.2.4",
     "page": "^1.7.1",
+    "q": "^1.4.1",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.7.0"
   },

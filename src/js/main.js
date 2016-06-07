@@ -1,11 +1,15 @@
 var hbs = require('handlebars/runtime').default,
-    layouts = require('handlebars-layouts'),
-    page = require('page');
+	layouts = require('handlebars-layouts'),
+	Router = require('director');
 
 hbs.registerHelper(layouts(hbs));
 hbs.registerPartial('layout', require('../templates/layout.hbs'));
 
-var homePage = require('./pages/homepage');
-homePage();
+var routes = {
+	'/': require('./pages/homepage'),
+	'/other': require('./pages/other')
+};
 
-console.log('main script runs or blah');
+var router = Router(routes);
+
+router.init();
