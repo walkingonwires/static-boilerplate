@@ -7,8 +7,6 @@ module.exports = function (ctx, next) {
     });
 
     document.body.innerHTML = template({
-        data: "An instantiated template!"
+        data: "Home template!"
     });
-
-    next();
 };

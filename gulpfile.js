@@ -31,7 +31,7 @@ gulp.task('connect', function() {
 });
 
 gulp.task('open', ['connect'], function(){
-    return gulp.src('./dist/index.html')
+    return gulp.src('dist/index.html')
         .pipe(gopen({
             uri: config.base + ':' + config.port,
             app: config.browser
@@ -67,15 +67,15 @@ function bundle (bundler) {
     return bundler
         .bundle()
         .pipe(source('app.js'))
-        .pipe(gulp.dest('./dist/js'));
+        .pipe(gulp.dest('dist/js'));
 }
 
 gulp.task('js', function () {
-    return bundle(browserify('./src/js/main.js'));
+    return bundle(browserify('src/js/main.js'));
 });
 
 gulp.task('watch', function () {
-    var watcher = watchify(browserify('./src/js/main.js', watchify.args));
+    var watcher = watchify(browserify('src/js/main.js', watchify.args));
 
     bundle(watcher);
 
