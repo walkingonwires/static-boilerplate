@@ -60,14 +60,16 @@ gulp.task('sass', function () {
 
 gulp.task('copyIndex', function () {
     return gulp.src('src/index.html')
-        .pipe(gulp.dest('dist/'));
+        .pipe(gulp.dest('dist/'))
+        .pipe(connect.reload());
 });
 
 function bundle (bundler) {
     return bundler
         .bundle()
         .pipe(source('app.js'))
-        .pipe(gulp.dest('dist/js'));
+        .pipe(gulp.dest('dist/js'))
+        .pipe(connect.reload());
 }
 
 gulp.task('js', function () {
