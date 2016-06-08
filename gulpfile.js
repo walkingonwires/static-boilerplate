@@ -12,7 +12,8 @@ var gulp = require("gulp"),
     autoprefixer = require('gulp-autoprefixer'),
     hbsfy = require('hbsfy'),
     connect = require('gulp-connect'),
-    gopen = require('gulp-open');
+    gopen = require('gulp-open'),
+    buffer = require('vinyl-buffer');
 
 var config ={
     port: 8888,
@@ -68,6 +69,12 @@ function bundle (bundler) {
     return bundler
         .bundle()
         .pipe(source('app.js'))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({loadMaps: true}))
+            //transforms go here
+            //.pipe(uglify())
+            .on('error', gutil.log)
+        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('dist/js'))
         .pipe(connect.reload());
 }
