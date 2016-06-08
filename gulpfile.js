@@ -30,7 +30,7 @@ gulp.task('connect', function() {
     });
 });
 
-gulp.task('open', ['connect'], function(){
+gulp.task('open', ['copyIndex', 'sass', 'js', 'connect'], function(){
     return gulp.src('dist/index.html')
         .pipe(gopen({
             uri: config.base + ':' + config.port,
@@ -90,4 +90,4 @@ gulp.task('watch', function () {
     }));
 });
 
-gulp.task('default', ['copyIndex', 'sass', 'js', 'open', 'watch']);
+gulp.task('default', ['open', 'watch']);
