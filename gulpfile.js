@@ -3,6 +3,7 @@ var gulp = require("gulp"),
     gutil = require('gulp-util'),
     watch = require('gulp-watch'),
     batch = require('gulp-batch'),
+    uglify = require('gulp-uglify'),
     cssnano = require('gulp-cssnano'),
     browserify = require('browserify'),
     watchify = require('watchify'),
@@ -72,7 +73,7 @@ function bundle (bundler) {
         .pipe(buffer())
         .pipe(sourcemaps.init({loadMaps: true}))
             //transforms go here
-            //.pipe(uglify())
+            .pipe(uglify())
             .on('error', gutil.log)
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('dist/js'))
