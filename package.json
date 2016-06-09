@@ -21,6 +21,7 @@
     "gulp-handlebars": "^4.0.0",
     "gulp-if": "^2.0.1",
     "gulp-inject": "^4.1.0",
+    "gulp-jshint": "^2.0.1",
     "gulp-open": "^2.0.0",
     "gulp-sass": "^2.3.1",
     "gulp-sourcemaps": "^1.6.0",
@@ -32,14 +33,14 @@
     "handlebars-layouts": "^3.1.3",
     "hbsfy": "^2.7.0",
     "jquery": "^2.2.4",
+    "jshint": "^2.9.2",
     "page": "^1.7.1",
     "q": "^1.4.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.7.0"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "browserify": {
     "transform": [
       "hbsfy"
