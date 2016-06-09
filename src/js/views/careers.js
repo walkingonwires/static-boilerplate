@@ -1,10 +1,10 @@
 var $ = require('jquery'),
-    template = require('../../templates/pages/what-we-do.hbs');
+    template = require('../../templates/views/careers.hbs');
 
 module.exports = function (ctx, next) {
     $('.page-content').html(
         template({
-            data: 'What We Do Template'
+            data: 'Careers Template'
         })
     );
 };

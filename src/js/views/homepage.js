@@ -1,4 +1,4 @@
-var template = require('../../templates/pages/home.hbs'),
+var template = require('../../templates/views/home.hbs'),
     content = require('../contentful/content'),
     $ = require('jquery');
 
