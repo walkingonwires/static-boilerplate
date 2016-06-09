@@ -14,15 +14,24 @@ var gulp = require("gulp"),
     hbsfy = require('hbsfy'),
     connect = require('gulp-connect'),
     gopen = require('gulp-open'),
-    buffer = require('vinyl-buffer');
+    buffer = require('vinyl-buffer'),
+    Bust = require('gulp-bust'),
+    clean = require('gulp-clean'),
+    inject = require('gulp-inject'),
+    gulpif = require('gulp-if');
 
-var config ={
-    port: 8888,
-    base:'http://localhost',
-    browser: 'Google Chrome'
-};
+var env = gutil.env || 'development',
+    bust = new Bust(),
+    config = {
+        port: 8888,
+        base: 'http://localhost',
+        browser: 'Google Chrome'
+    },
+    flags = {
+        production: false
+    };
 
-gulp.task('connect', function() {
+gulp.task('connect', ['createDist'], function () {
     connect.server({
         root: 'dist',
         port: config.port,
@@ -32,7 +41,7 @@ gulp.task('connect', function() {
     });
 });
 
-gulp.task('open', ['copyIndex', 'sass', 'js', 'connect'], function(){
+gulp.task('open', ['connect'], function () {
     return gulp.src('dist/index.html')
         .pipe(gopen({
             uri: config.base + ':' + config.port,
@@ -40,11 +49,11 @@ gulp.task('open', ['copyIndex', 'sass', 'js', 'connect'], function(){
         }));
 });
 
-gulp.task('sass', function () {
+gulp.task('sass', ['cleanCss'], function () {
     return gulp.src('src/style/style.scss')
-        .pipe(sourcemaps.init())
+        .pipe(gulpif(!flags.production, sourcemaps.init()))
         .pipe(sass()
-            .on('error', function(err){
+            .on('error', function (err) {
                 gutil.log(err);
                 this.emit('end');
             }))
@@ -55,32 +64,28 @@ gulp.task('sass', function () {
         .pipe(cssnano({
             autoprefixer: false
         }))
-        .pipe(sourcemaps.write('./'))
+        .pipe(gulpif(!flags.production, sourcemaps.write('./')))
+        .pipe(gulpif(flags.production, bust.resources()))
         .pipe(gulp.dest('dist/style/'))
         .pipe(connect.reload());
 });
 
-gulp.task('copyIndex', function () {
-    return gulp.src('src/index.html')
-        .pipe(gulp.dest('dist/'))
-        .pipe(connect.reload());
-});
-
-function bundle (bundler) {
+function bundle(bundler) {
+    cleanDirs('dist/js');
     return bundler
         .bundle()
+        .on('error', gutil.log)
         .pipe(source('app.js'))
         .pipe(buffer())
-        .pipe(sourcemaps.init({loadMaps: true}))
-            //transforms go here
-            .pipe(uglify())
-            .on('error', gutil.log)
-        .pipe(sourcemaps.write('./'))
+        .pipe(gulpif(!flags.production ,sourcemaps.init({loadMaps: true})))
+        .pipe(gulpif(!flags.production, sourcemaps.write('./')))
+        .pipe(gulpif(flags.production, bust.resources()))
+        .pipe(gulpif(flags.production ,uglify()))
         .pipe(gulp.dest('dist/js'))
         .pipe(connect.reload());
 }
 
-gulp.task('js', function () {
+gulp.task('js', ['cleanJs'], function () {
     return bundle(browserify('src/js/main.js'));
 });
 
@@ -95,9 +100,38 @@ gulp.task('watch', function () {
 
     watcher.on('log', gutil.log);
 
-    watch('src/style/**', batch(function (events, done) {
-        gulp.start('sass', done);
-    }));
+    watch('src/style/**', ['sass']);
+
+});
+
+gulp.task('cleanCss', function () {
+    return cleanDirs('dist/style');
+});
+
+gulp.task('cleanJs', function () {
+    return cleanDirs('dist/js');
+});
+
+gulp.task('cleanIndex', function () {
+     return cleanDirs('dist/*.html');
+});
+
+function cleanDirs(dir) {
+    return gulp.src(dir, {read: false})
+        .pipe(clean());
+}
+
+gulp.task('createDist', ['sass', 'js', 'cleanIndex'], function () {
+    var target = gulp.src('./src/index.html');
+    var sources = gulp.src(['dist/js/*.js', 'dist/style/*.css'], {read: false});
+
+    return target.pipe(inject(sources, {ignorePath: '/dist/'}))
+        .pipe(gulp.dest('dist'));
+});
+
+gulp.task('prod', function () {
+    flags.production = true;
 });
 
 gulp.task('default', ['open', 'watch']);
+gulp.task('build', ['createDist']);
