@@ -14,8 +14,8 @@ module.exports = {
 			.then(function(results) {
 				return deferred.resolve(results);
 			}, function(e) {
-				return deeferred.reject(e);
-			})
+				return deferred.reject(e);
+			});
 
 		return deferred.promise;
 	}

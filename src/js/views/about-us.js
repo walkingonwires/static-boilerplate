@@ -6,5 +6,5 @@ module.exports = function (ctx, next) {
         template({
             data: 'About Us Template'
         })
-    );
-};
+    )
+}

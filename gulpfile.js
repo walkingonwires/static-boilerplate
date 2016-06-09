@@ -1,25 +1,37 @@
+// Gulp
 var gulp = require("gulp"),
-    sass = require('gulp-sass'),
+    gulpif = require('gulp-if'),
+    Bust = require('gulp-bust'),
     gutil = require('gulp-util'),
+    clean = require('gulp-clean'),
     watch = require('gulp-watch'),
     uglify = require('gulp-uglify'),
-    cssnano = require('gulp-cssnano'),
-    browserify = require('browserify'),
-    watchify = require('watchify'),
-    source = require('vinyl-source-stream'),
-    sourcemaps = require('gulp-sourcemaps'),
-    handlebars = require('gulp-handlebars'),
-    autoprefixer = require('gulp-autoprefixer'),
-    connect = require('gulp-connect'),
-    gopen = require('gulp-open'),
-    buffer = require('vinyl-buffer'),
-    Bust = require('gulp-bust'),
-    clean = require('gulp-clean'),
+    jshint = require('gulp-jshint'),
     inject = require('gulp-inject'),
-    gulpif = require('gulp-if');
+    buffer = require('vinyl-buffer'),
+    source = require('vinyl-source-stream'),
+    sourcemaps = require('gulp-sourcemaps');
 
-var env = gutil.env || 'development',
-    bust = new Bust(),
+// Style
+var sass = require('gulp-sass'),
+    cssnano = require('gulp-cssnano'),
+    autoprefixer = require('gulp-autoprefixer');
+
+// Browserify
+var watchify = require('watchify'),
+    browserify = require('browserify');
+
+// Images
+var imagemin = require('gulp-imagemin'),
+    pngquant = require('imagemin-pngquant');
+
+// Server
+var gopen = require('gulp-open'),
+    connect = require('gulp-connect');
+
+
+
+var bust = new Bust(),
     config = {
         port: 8888,
         base: 'http://localhost',
@@ -28,6 +40,7 @@ var env = gutil.env || 'development',
     flags = {
         production: false
     };
+
 
 gulp.task('connect', ['createDist'], function () {
     connect.server({
@@ -75,16 +88,23 @@ function bundle(bundler) {
         .on('error', gutil.log)
         .pipe(source('app.js'))
         .pipe(buffer())
-        .pipe(gulpif(!flags.production ,sourcemaps.init({loadMaps: true})))
+        .pipe(gulpif(!flags.production, sourcemaps.init({loadMaps: true})))
         .pipe(gulpif(!flags.production, sourcemaps.write('./')))
         .pipe(gulpif(flags.production, bust.resources()))
-        .pipe(gulpif(flags.production ,uglify()))
+        .pipe(gulpif(flags.production, uglify()))
         .pipe(gulp.dest('dist/js'))
         .pipe(connect.reload());
 }
 
 gulp.task('js', ['cleanJs'], function () {
     return bundle(browserify('src/js/main.js'));
+});
+
+gulp.task('lint', function () {
+    return gulp.src(['./gulpfile.js', './src/js/**/*.js'])
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'))
+        .pipe(jshint.reporter('fail'));
 });
 
 gulp.task('watch', function () {
@@ -111,7 +131,7 @@ gulp.task('cleanJs', function () {
 });
 
 gulp.task('cleanIndex', function () {
-     return cleanDirs('dist/*.html');
+    return cleanDirs('dist/*.html');
 });
 
 function cleanDirs(dir) {
@@ -119,12 +139,24 @@ function cleanDirs(dir) {
         .pipe(clean());
 }
 
-gulp.task('createDist', ['sass', 'js', 'cleanIndex'], function () {
+gulp.task('createDist', ['sass', 'js', 'cleanIndex', 'copyImages'], function () {
     var target = gulp.src('./src/index.html');
     var sources = gulp.src(['dist/js/*.js', 'dist/style/*.css'], {read: false});
 
     return target.pipe(inject(sources, {ignorePath: '/dist/'}))
         .pipe(gulp.dest('dist'));
+});
+
+
+gulp.task('copyImages', function () {
+    return gulp.src('src/images/**/*')
+        .pipe(gulpif(flags.production, imagemin({
+            progressive: true,
+            svgoPlugins: [{removeViewBox: false}],
+            use: [pngquant()]
+        })))
+        .pipe(gulp.dest('dist/images/'))
+        .pipe(connect.reload());
 });
 
 gulp.task('prod', function () {
