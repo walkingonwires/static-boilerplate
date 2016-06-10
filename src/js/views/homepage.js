@@ -3,17 +3,19 @@ var template = require('../../templates/views/home.hbs'),
     $ = require('jquery');
 
 module.exports = function (ctx, next) {
+
+    var labs = null,
+        jobs = null;
+
     content.getLabs().done(function (results) {
-        if (results.items) console.log('getLabs:', results.items);
+        if (results.items) labs = results.items;
+        render();
     });
 
-    content.getJobs().done(function (results) {
-        if (results.items) console.log('getJobs:', results.items);
-    });
-
-    $('.page-content').html(
-        template({
-            data: 'Home template'
-        })
-    );
+    var render = function () {
+        $('.page-content').html(template({
+            data: 'Home template',
+            labs: labs
+        }));
+    };
 };
