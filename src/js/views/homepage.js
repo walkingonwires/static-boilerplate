@@ -4,7 +4,7 @@ var template = require('../../templates/views/home.hbs'),
 
 module.exports = function (ctx, next) {
     content.getLabs().done(function (results) {
-        console.log(results);
+        if (results.items) console.log('getLabs:', results.items);
     });
 
     $('.page-content').html(
