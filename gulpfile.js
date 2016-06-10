@@ -29,8 +29,6 @@ var imagemin = require('gulp-imagemin'),
 var gopen = require('gulp-open'),
     connect = require('gulp-connect');
 
-
-
 var bust = new Bust(),
     config = {
         port: 8888,
@@ -146,7 +144,6 @@ gulp.task('createDist', ['sass', 'js', 'cleanIndex', 'copyImages'], function () 
     return target.pipe(inject(sources, {ignorePath: '/dist/'}))
         .pipe(gulp.dest('dist'));
 });
-
 
 gulp.task('copyImages', function () {
     return gulp.src('src/images/**/*')
