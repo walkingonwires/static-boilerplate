@@ -8,15 +8,15 @@ var client = contentful.createClient({
 });
 
 module.exports = {
-	getHomepage: function() {
+	getLabs: function () {
 		var deferred = Q.defer();
-		client.getEntry('5XOj374iDm8WYmgmWOoosk')
-			.then(function(results) {
-				return deferred.resolve(results);
-			}, function(e) {
-				return deferred.reject(e);
-			});
-
+		client.getEntries({
+			'content_type': 'labTile'
+		}).then(function (results) {
+			return deferred.resolve(results);
+		}, function (e) {
+			return deferred.reject(e);
+		});
 		return deferred.promise;
 	}
 };

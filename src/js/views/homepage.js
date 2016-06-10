@@ -3,7 +3,7 @@ var template = require('../../templates/views/home.hbs'),
     $ = require('jquery');
 
 module.exports = function (ctx, next) {
-    content.getHomepage().done(function (results) {
+    content.getLabs().done(function (results) {
         console.log(results);
     });
 
