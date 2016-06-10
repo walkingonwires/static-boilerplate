@@ -13,6 +13,8 @@ module.exports = function (ctx, next) {
     });
 
     var render = function () {
+        console.log(labs);
+
         $('.page-content').html(template({
             data: 'Home template',
             labs: labs
