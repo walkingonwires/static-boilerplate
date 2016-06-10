@@ -118,7 +118,7 @@ gulp.task('watch', function () {
 
     watcher.on('log', gutil.log);
 
-    watch('src/style/**', ['sass']);
+    gulp.watch('src/style/**/*.scss', ['sass']);
 
 });
 

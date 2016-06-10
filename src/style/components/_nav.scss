@@ -1,0 +1,36 @@
+nav {
+    top: 0;
+    left: 0;
+    width: 100%;
+    position: fixed;
+    border-bottom: 1px solid $border-dark;
+
+    &:after {
+        content: '';
+        clear: both;
+        display: block;
+    }
+
+    .logo-container {
+        float: left;
+    }
+
+    ul {
+        float: right;
+
+        &:after {
+            content: '';
+            clear: both;
+            display: block;
+        }
+
+        li {
+            float: left;
+            padding: 8px;
+
+            &.active {
+                background-color: gray;
+            }
+        }
+    }
+}
