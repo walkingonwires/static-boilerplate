@@ -18,5 +18,17 @@ module.exports = {
 			return deferred.reject(e);
 		});
 		return deferred.promise;
+	},
+
+	getJobs: function () {
+		var deferred = Q.defer();
+		client.getEntries({
+			'content_type': 'jobPost'
+		}).then(function (results) {
+			return deferred.resolve(results);
+		}, function (e) {
+			return deferred.reject(e);
+		});
+		return deferred.promise;
 	}
 };

@@ -7,6 +7,10 @@ module.exports = function (ctx, next) {
         if (results.items) console.log('getLabs:', results.items);
     });
 
+    content.getJobs().done(function (results) {
+        if (results.items) console.log('getJobs:', results.items);
+    });
+
     $('.page-content').html(
         template({
             data: 'Home template'
