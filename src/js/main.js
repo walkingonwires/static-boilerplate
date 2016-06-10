@@ -4,4 +4,3 @@ var hbs = require('handlebars/runtime').default,
 
 window.page = page;
 router();
-
