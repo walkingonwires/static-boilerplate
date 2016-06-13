@@ -5,5 +5,5 @@ var hbs = require('handlebars/runtime').default,
 window.page = page;
 router();
 
-var labTile = require('../templates/partials/lab-tile.hbs');
-hbs.registerPartial('labTile', labTile);
+var labSet = require('../templates/partials/lab-set.hbs');
+hbs.registerPartial('labSet', labSet);
