@@ -1,6 +1,14 @@
-<div class="lab-tile">
-    <img src="{{imgSrc}}" alt=""/>
-    <h2>{{title}}</h2>
-    <p>{{description}}</p>
-    <a href="{{href}}" target="_blank">{{hrefText}}</a>
-</div>
+<section class="lab-set">
+
+    {{#each labs}}
+
+        <div class="lab-tile">
+            <img src="{{this.fields.image.fields.file.url}}" alt=""/>
+            <h2>{{this.fields.title}}</h2>
+            <p>{{this.fields.description}}</p>
+            <a href="{{this.fields.url}}" target="_blank">{{this.fields.linkText}}</a>
+        </div>
+
+    {{/each}}
+
+</section>
