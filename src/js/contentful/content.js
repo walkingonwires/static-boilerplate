@@ -8,27 +8,35 @@ var client = contentful.createClient({
 });
 
 module.exports = {
-	getLabs: function () {
-		var deferred = Q.defer();
+	getLabs: function (resultLimit) {
+		var limits = resultLimit ? resultLimit : 1000,
+			deferred = Q.defer();
+
 		client.getEntries({
+			limit: limits,
 			'content_type': 'labTile'
 		}).then(function (results) {
 			return deferred.resolve(results);
 		}, function (e) {
 			return deferred.reject(e);
 		});
+		
 		return deferred.promise;
 	},
 
-	getJobs: function () {
-		var deferred = Q.defer();
+	getJobs: function (resultLimit) {
+		var limits = resultLimit ? resultLimit : 1000,
+			deferred = Q.defer();
+
 		client.getEntries({
+			limit: limits,
 			'content_type': 'jobPost'
 		}).then(function (results) {
 			return deferred.resolve(results);
 		}, function (e) {
 			return deferred.reject(e);
 		});
+
 		return deferred.promise;
 	}
 };

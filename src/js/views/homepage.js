@@ -1,20 +1,33 @@
 var template = require('../../templates/views/home.hbs'),
     content = require('../contentful/content'),
-    $ = require('jquery');
+    $ = require('jquery'),
+    Q = require('q');
 
 module.exports = function (ctx, next) {
 
     var labs = null,
         jobs = null;
 
-    content.getLabs().done(function (results) {
-        if (results.items) labs = results.items;
+    function getAll () {
+        return Q.all([
+            content.getLabs(),
+            content.getJobs()
+        ]);
+    }
+
+    getAll().catch(function (error) {
+        console.log(error);
+    }).done(function (results) {
+        if (results[0].items) labs = results[0].items;
+        if (results[1].items) jobs = results[1].items;
+
+        console.log('labs:', labs);
+        console.log('jobs:', jobs);
+
         render();
     });
-
+    
     var render = function () {
-        console.log(labs);
-
         $('.page-content').html(template({
             data: 'Home template',
             labs: labs
