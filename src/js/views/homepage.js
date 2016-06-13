@@ -8,13 +8,6 @@ module.exports = function (ctx, next) {
     var labs = null,
         jobs = null;
 
-    function getAll () {
-        return Q.all([
-            content.getLabs(),
-            content.getJobs()
-        ]);
-    }
-
     getAll().catch(function (error) {
         console.log(error);
     }).done(function (results) {
@@ -26,6 +19,13 @@ module.exports = function (ctx, next) {
 
         render();
     });
+
+    function getAll () {
+        return Q.all([
+            content.getLabs(),
+            content.getJobs()
+        ]);
+    }
     
     var render = function () {
         $('.page-content').html(template({
