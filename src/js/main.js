@@ -4,6 +4,3 @@ var hbs = require('handlebars/runtime').default,
 
 window.page = page;
 router();
-
-var labSet = require('../templates/partials/lab-set.hbs');
-hbs.registerPartial('labSet', labSet);
