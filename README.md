@@ -1,4 +1,4 @@
-# Transmogrify Front-End Boilerplate - Gulp, Browserify, SCSS, Handlbars, PageJS
+# Front-End Boilerplate - Gulp, Browserify, SCSS, Handlbars, PageJS
 
 ## How it Works
 
@@ -29,6 +29,3 @@ By default, JSHint isn't doing anything.  It checks all JS files in src/js/.  If
 	gulp lint
 
 This will show a report in Terminal.
-
-
-
