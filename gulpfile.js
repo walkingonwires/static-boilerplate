@@ -6,7 +6,6 @@ var gulp = require("gulp"),
     clean = require('gulp-clean'),
     watch = require('gulp-watch'),
     uglify = require('gulp-uglify'),
-    jshint = require('gulp-jshint'),
     inject = require('gulp-inject'),
     buffer = require('vinyl-buffer'),
     source = require('vinyl-source-stream'),
@@ -96,13 +95,6 @@ function bundle(bundler) {
 
 gulp.task('js', ['cleanJs'], function () {
     return bundle(browserify('src/js/main.js'));
-});
-
-gulp.task('lint', function () {
-    return gulp.src(['./gulpfile.js', './src/js/**/*.js'])
-        .pipe(jshint())
-        .pipe(jshint.reporter('default'))
-        .pipe(jshint.reporter('fail'));
 });
 
 gulp.task('watch', function () {
