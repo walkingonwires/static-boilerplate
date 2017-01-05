@@ -14,4 +14,3 @@ module.exports = function(ctx, next) {
 
     $('.page-content').html(secondaryView.render());
 };
-
