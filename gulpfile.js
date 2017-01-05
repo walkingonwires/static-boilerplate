@@ -109,7 +109,6 @@ gulp.task('watch', function () {
     watcher.on('log', gutil.log);
 
     gulp.watch('src/style/**/*.scss', ['sass']);
-
 });
 
 gulp.task('cleanCss', function () {

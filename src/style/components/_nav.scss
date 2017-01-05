@@ -3,6 +3,7 @@ nav {
     left: 0;
     width: 100%;
     position: fixed;
+    height: $headerHeight;
     background-color: $white;
     border-bottom: 1px solid $border-dark;
 
@@ -12,26 +13,8 @@ nav {
         display: block;
     }
 
-    .logo-container {
-        float: left;
-    }
-
-    ul {
-        float: right;
-
-        &:after {
-            content: '';
-            clear: both;
-            display: block;
-        }
-
-        li {
-            float: left;
-            padding: 8px;
-
-            &.active {
-                background-color: gray;
-            }
-        }
+    ul li {
+        padding: 8px;
+        display: inline-block;
     }
 }
