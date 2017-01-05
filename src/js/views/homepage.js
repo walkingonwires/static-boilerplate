@@ -1,8 +1,16 @@
 var $ = require('jquery'),
-    template = require('../../templates/views/home.hbs');
+    PageView = require('../components/page-view'),
+    homepageTemplate = require('../../templates/views/home.hbs');
 
 module.exports = function(ctx, next) {
-	$('.page-content').html(template({
-        data: 'home page data'
-    }));
+    var homepageModel = {
+        data: 'homepage data'
+    };
+
+    var homepageView = new PageView({
+        template: homepageTemplate,
+        model: homepageModel
+    });
+
+    $('.page-content').html(homepageView.render());
 };

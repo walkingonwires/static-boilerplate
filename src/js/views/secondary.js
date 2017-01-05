@@ -1,8 +1,17 @@
 var $ = require('jquery'),
-    template = require('../../templates/views/secondary.hbs');
+    PageView = require('../components/page-view'),
+    secondaryTemplate = require('../../templates/views/secondary.hbs');
 
 module.exports = function(ctx, next) {
-    $('.page-content').html(template({
-        data: 'secondary page data'
-    }));
+    var secondaryModel = {
+        data: 'secondary data'
+    };
+
+    var secondaryView = new PageView({
+        template: secondaryTemplate,
+        model: secondaryModel
+    });
+
+    $('.page-content').html(secondaryView.render());
 };
+

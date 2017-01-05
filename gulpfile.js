@@ -98,7 +98,10 @@ gulp.task('js', ['cleanJs'], function () {
 });
 
 gulp.task('watch', function () {
-    var watcher = watchify(browserify('src/js/main.js', watchify.args));
+    var watcher = watchify(
+        browserify('src/js/main.js', watchify.args)
+            .transform('babelify', {presets: ["es2015"]})
+    );
 
     bundle(watcher);
 
